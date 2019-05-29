@@ -48,16 +48,18 @@ The steps of installation of the project are the following:
 
 3. composer install
 
-4. Install MySQL as always and create the "bookshop" DB and the user that appears in the file mybookshop/.env file
+4. cp .env.example .env
 
-5. php artisan migrate
+5. Install MySQL as always and create the "bookshop" DB and the user that appears in the file mybookshop/.env file
 
-6. To populate the "books" table and the "addresses" table with some rows to use the project, execute:
+6. php artisan migrate
+
+7. To populate the "books" table and the "addresses" table with some rows to use the project, execute:
 
 - php artisan db:seed --class=BooksTableSeeder
 - php artisan db:seed --class=AddressesTableSeeder
 
-7. start the server: run NGINX listening in 8080  (don't try php artisan serve bcs it doesn't work)
+8. start the server: run NGINX listening in 8080  (don't try php artisan serve bcs it doesn't work)
 
 Please, at this time it is necessary to use port 8080. Due to lack of time the URLs of the APIs are hardcoded in 127.0.0.1:8080. I'll get it out to setup as soon as I can ...
 
