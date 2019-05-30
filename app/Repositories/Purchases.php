@@ -87,6 +87,22 @@ class Purchases
         
     }
     
+    
+    
+    function allByUser($user_id) {
+        
+        $params = array();
+        $params['form_params'] = ['user_id' => $user_id ];
+        
+        $response = $this->callApi("POST", "api/purchases/search", $params);
+        
+        if(!$response) return;
+        
+        return json_decode($response->getBody()->getContents());
+        
+    }
+    
+    
     protected function callApi($method, $uri, $params = []) {
     
         $user = Auth::guard('web')->user();

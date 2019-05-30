@@ -32,7 +32,7 @@ class AddressController extends Controller
     public function store(Request $request)
     {
         if($request->main == true) {
-            DB::table('addresses')->update(array('main' => 0));
+            DB::table('addresses')->where('user_id', '=', $request->user_id)->update(array('main' => 0));
         }
         $address = Address::create($request->all());
         
@@ -62,7 +62,7 @@ class AddressController extends Controller
     public function update(Request $request, Address $address)
     {
         if($request->main == true) {
-            DB::table('addresses')->update(array('main' => 0));
+            DB::table('addresses')->where('user_id', '=', $request->user_id)->update(array('main' => 0));
         }
         $address->update($request->all());
         

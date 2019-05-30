@@ -35,9 +35,14 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $purchases = $this->purchases->all();
+        //$purchases = $this->purchases->all();
+        $user = Auth::guard('web')->user();
+        
+        $purchases = $this->purchases->allByUser($user->id); //always by user...
+        
         return view('purchases.index', compact('purchases'));        
     }
+    
     
     /**
      * Show the form for creating a new resource.
@@ -91,7 +96,7 @@ class PurchaseController extends Controller
         
         $this->purchases->add($purchase);
         
-        $purchases = $this->purchases->all();        
+        $purchases = $this->purchases->allByUser($user->id);
         return view('purchases.index', compact('purchases'));
         
     }

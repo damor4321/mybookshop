@@ -29,7 +29,7 @@ class AddressController extends Controller
         
         $user = Auth::guard('web')->user();
         
-        $addresses = $this->addresses->allByUser($user->id);
+        $addresses = $this->addresses->allByUser($user->id); //for current user
         
         return view('addresses.index', compact('addresses'));
         
@@ -86,7 +86,7 @@ class AddressController extends Controller
         
         $this->addresses->add($address);
         
-        $addresses = $this->addresses->all();
+        $addresses = $this->addresses->allByUser($user->id);
         
         if (!$addresses) {
             return view('home');
@@ -122,7 +122,7 @@ class AddressController extends Controller
         
         $this->addresses->update($id, $address);
         
-        $addresses = $this->addresses->all();
+        $addresses = $this->addresses->allByUser($user->id);
         
         if (!$addresses) {
             return view('home');
@@ -139,10 +139,13 @@ class AddressController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {    
+    {   
+        
+        $user = Auth::guard('web')->user();
+        
         $this->addresses->delete($id);
         
-        $addresses = $this->addresses->all();
+        $addresses = $this->addresses->allByUser($user->id);
         
         if (!$addresses) {
             return view('home');

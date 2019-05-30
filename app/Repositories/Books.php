@@ -24,7 +24,7 @@ class Books
     function find($id) {
                         
         $response = $this->callApi("GET", "api/books/{$id}");
-        dd($response);
+
         if(!$response) return;
         
         return json_decode($response->getBody()->getContents());
