@@ -4,6 +4,9 @@ namespace App\Repositories;
 
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\RequestException;
+
 
 class Books 
 {
@@ -73,12 +76,18 @@ class Books
             'timeout'  => 2.0,
         ]);
         
-        //print_r("$method $uri");
-        //dd($params);
-        $response = $client->request($method, $uri, $params);
-        
-        //print_r($response);
-        
+        $response = null;
+        try {
+            $response = $client->request($method, $uri, $params);
+        }
+        catch (RequestException $e){
+            echo "REQUEST: " . Psr7\str($e->getRequest()) ."<br/>";
+            if ($e->hasResponse()) {
+                echo "RESPONSE: ";
+                echo Psr7\str($e->getResponse());
+            }
+        }
+        //dd($response);
         return $response;
     }
     

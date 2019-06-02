@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\RequestException;
 
 class Addresses 
 {
@@ -122,9 +124,19 @@ class Addresses
         ]);
         
         //print_r("$method $uri");
-        //dd($params);        
-        $response = $client->request($method, $uri, $params);
-        //dd($response);
+        //dd($params);
+        $response = null;
+        try {
+            $response = $client->request($method, $uri, $params);
+        }
+        catch (RequestException $e){
+            echo "REQUEST: " . Psr7\str($e->getRequest()) ."<br/>";
+            if ($e->hasResponse()) {
+                echo "RESPONSE: ";
+                echo Psr7\str($e->getResponse());
+            }
+        }
+        //dd($response);        
         return $response;
     }
     

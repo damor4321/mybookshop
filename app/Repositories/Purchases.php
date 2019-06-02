@@ -4,6 +4,9 @@ namespace App\Repositories;
 
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\RequestException;
+
 
 class Purchases 
 {
@@ -22,14 +25,13 @@ class Purchases
     }
 
     function find($id) {
-                        
-        $response = $this->callApi("GET", "api/purchases/{$id}");
         
-        if(!$response) return;
-        
-        return json_decode($response->getBody()->getContents());
-        
-        
+            $response = $this->callApi("GET", "api/purchases/{$id}");
+    
+            if(!$response) return;
+            
+            return json_decode($response->getBody()->getContents());
+              
     }
 
 
@@ -121,8 +123,18 @@ class Purchases
         ]);
         
         //print_r("$method $uri");
-        //dd($params);        
-        $response = $client->request($method, $uri, $params);
+        //dd($params);
+        $response = null;
+        try {
+            $response = $client->request($method, $uri, $params);
+        }
+        catch (RequestException $e){
+            echo "REQUEST: " . Psr7\str($e->getRequest()) ."<br/>";
+            if ($e->hasResponse()) {
+                echo "RESPONSE: ";
+                echo Psr7\str($e->getResponse());
+            }
+        }        
         //dd($response);
         return $response;
     }
